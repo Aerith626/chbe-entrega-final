@@ -1,0 +1,100 @@
+<h2>Productos</h2>
+{{#if products.length}}
+	<div class="row">
+		<div class="col-md-3 col-lg-2">
+			<ul>
+				{{#each categories}}
+				<li><a href="?category={{this}}">{{this}}</a></li>
+				{{/each}}
+			</ul>
+			<div class="mb-3">
+				<label for="price" class="form-label"><small>Precio</small></label>
+				<select id="price" class="form-select form-select-sm">
+					<option value="">Seleccione</option>
+					<option value="asc">Más bajo al más alto</option>
+					<option value="desc">Más alto al más bajo</option>
+				</select>
+			</div>
+			<div>
+				<label for="limit" class="form-label"><small>Items por página</small></label>
+				<select id="limit" class="form-select form-select-sm">
+					<option value="">Seleccione</option>
+					<option value="3">3</option>
+					<option value="5">5</option>
+					<option value="10">10</option>
+					<option value="15">15</option>
+				</select>
+			</div>
+		</div>
+		<div class="col-md-9 col-lg-10">
+			<div class="row gy-4">
+				{{#each products}}
+				<div class="col-md-6 col-lg-4">
+					<div class="card h-100 text-decoration-none" >
+						<div class="card-body">
+							<div class="d-flex align-items-center justify-content-between">
+								<small class="text-uppercase text-body-tertiary fw-semibold">{{ this.category }}</small>
+								<small class="text-body-tertiary ">{{#if this.stock }}{{this.stock}} en stock{{else}}Sin stock{{/if}}</small>
+							</div>
+							<h4 class="card-title text-body-secondary">{{ this.title }}</h4>
+							<p class="card-text mb-1">{{ this.description }}</p>
+							<div class="d-flex justify-content-between">
+								<span class="fs-3 text-body-secondary fw-semibold">{{#if this.price}}${{ this.price }}{{else}}Gratis{{/if}}</span>
+								<a class="text-end icon-link icon-link-hover" href="/products/{{this.id}}">Ver producto
+									<svg xmlns="http://www.w3.org/2000/svg" class="bi" viewBox="0 0 16 16" aria-hidden="true">
+										<path d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z" />
+									</svg>
+								</a>
+							</div>
+						</div>
+					</div>
+				</div>
+				{{/each}}
+			</div>
+			{{#if links }}
+			<nav class="mt-4">
+				<ul class="pagination">
+				{{#each links}}
+					<li class="page-item {{#if this.active }}active{{/if}}"><a class="page-link" href="{{ this.link }}">{{ this.text }}</a></li>
+				{{/each}}
+				</ul>
+			</nav>
+			{{/if}}
+		</div>
+	</div>
+	{{else}}
+
+	{{#if error}}
+	<div class="alert alert-danger">{{ error }}</div>
+	{{else}}
+	<div class="alert alert-warning">No se encontraron productos</div>
+	{{/if}}
+{{/if}}
+
+<script>
+	document.addEventListener("DOMContentLoaded", () => {
+		const priceSelect = document.getElementById("price");
+		const limitSelect = document.getElementById("limit");
+
+		priceSelect.addEventListener("change", () => {
+			const price = priceSelect.value;
+			const params = new URLSearchParams(window.location.search);
+
+			params.set("sort", price);
+			const newUrl = `${window.location.pathname}?${params.toString()}`;
+			
+			window.location.href = newUrl;		
+		});
+
+		limitSelect.addEventListener("change", () => {
+			const limit = limitSelect.value;
+			const params = new URLSearchParams(window.location.search);
+
+			params.set("limit", limit);
+			params.set("page", 1); // Reiniciar a página 1
+			const newUrl = `${window.location.pathname}?${params.toString()}`;
+
+			window.location.href = newUrl;		
+		});
+	});
+</script>

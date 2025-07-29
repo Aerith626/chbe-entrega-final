@@ -1,0 +1,13 @@
+<div class="container">
+	
+	<div class="d-flex justify-content-between">
+		<span class="d-block text-uppercase text-body-secondary fw-semibold">{{ product.category }}</span>
+		<span>{{#if product.status }}Disponible{{else}}No disponible{{/if}} - {{ product.stock }} disponibles</span>
+	</div>
+	
+	<h2>{{ product.title }}</h2>
+	
+	<h5 class="fs-3">${{ product.price }}</h5>
+	
+	
+</div>
