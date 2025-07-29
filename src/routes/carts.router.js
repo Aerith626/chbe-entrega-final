@@ -62,7 +62,7 @@ cartRouter.delete("/:cid", async (req, res) => {
 		if (!updatedCart) {
 			return res.status(404).json({ status: "error", message: "Carrito con id " + cid + " no encontrado" });
 		}
-		res.status(200).json({ status: "success", message: "Carrito vaciado", payload: updatedCart });
+		res.status(200).json({ status: "success", message: "Carrito vaciado", payload: updatedCart, new: true });
 	} catch (error) {
 		console.error(error);
 		res.status(500).json({ status: "error", message: "Error al vaciar carrito" });

@@ -22,6 +22,20 @@ productsRouter.get("/", async (req, res) => {
 	}
 });
 
+// Obtener producto por Id
+productsRouter.get("/:pid", async (req,res) => {
+	try {
+		const pid = req.params.pid;
+		const product = await Product.findById(pid);
+
+		if (!product) return res.status(404).json({ status: "error", message: "Producto con id " + pid + " no encontrado" });
+
+		res.status(200).json({ status: "success", payload: product });
+	} catch (error) {
+		res.status(500).json({ status: "error", message: "Error al obtener producto" });
+	}
+});
+
 // Crear producto
 productsRouter.post("/", async (req, res) => {
 	try {
