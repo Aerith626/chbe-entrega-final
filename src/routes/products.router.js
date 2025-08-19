@@ -1,24 +1,18 @@
 import express from "express";
 import Product from "../models/product.model.js";
+import ProductManager from "../controllers/productManager.js";
 
 const productsRouter = express.Router();
+const productManager = new ProductManager;
 
 // Obtener productos
 productsRouter.get("/", async (req, res) => {
 	try {
-		const { page = 1, limit = 3, sort = "asc" } = req.query;
-
-		const sortOption = {};
-		if (sort === "asc") sortOption.price = 1;
-		else if (sort === "desc") sortOption.price = -1;
-
-		const data = await Product.paginate({}, {limit, page, sort: sortOption});
-		const products = data.docs;
-		delete data.docs;
-
-		res.status(200).json({status: "success", payload: products, ...data});
+		const { page, limit, sort } = req.query;
+		const {products, pagination} = await productManager.getProducts({page, limit, sort});
+		res.status(200).json({status: "success", payload: products, ...pagination});
 	} catch (error) {
-		res.status(500).json({status: "error", message: "Error al conseguir productos"});
+		res.status(error.statusCode || 500).json({status: "error", message: error.message || "Error al conseguir productos"});
 	}
 });
 
@@ -26,26 +20,20 @@ productsRouter.get("/", async (req, res) => {
 productsRouter.get("/:pid", async (req,res) => {
 	try {
 		const pid = req.params.pid;
-		const product = await Product.findById(pid);
-
-		if (!product) return res.status(404).json({ status: "error", message: "Producto con id " + pid + " no encontrado" });
-
+		const product = await productManager.getProductById(pid);
 		res.status(200).json({ status: "success", payload: product });
 	} catch (error) {
-		res.status(500).json({ status: "error", message: "Error al obtener producto" });
+		res.status(error.statusCode || 500).json({ status: "error", message: error.message || "Error al obtener producto" });
 	}
 });
 
 // Crear producto
 productsRouter.post("/", async (req, res) => {
 	try {
-		const { title, price, code, stock, category, thumbnail } = req.body;
-		const product = new Product({ title, price, code, stock, category, thumbnail });
-		await product.save();
-
+		const product = await productManager.addProduct(req.body);
 		res.status(201).json({status: "success", payload: product});
 	} catch (error) {
-		res.status(500).json({status: "error", message: "Error al crear producto: " + error});
+		res.status(error.statusCode || 500).json({ status: "error", message: error.message || "Error al obtener producto" });
 	}
 });
 
@@ -55,12 +43,10 @@ productsRouter.put("/:pid", async (req, res) => {
 		const pid = req.params.pid;
 		const updateData = req.body;
 
-		const updatedProduct = await Product.findByIdAndUpdate(pid, updateData, {new: true, runValidators: true}); // new: retornar producto nuevo. runValidators: pasar validaciones de nuevo
-		if (!updatedProduct) return res.status(404).json({status: "error", message: "Producto con id " + pid + " no encontrado"});
-
+		const updatedProduct = await productManager.updateProductById(pid, updateData);
 		res.status(200).json({ status: "success", payload: updatedProduct });
 	} catch (error) {
-		res.status(500).json({ status: "error", message: "Error al actualizar producto: " + error });
+		res.status(error.statusCode || 500).json({ status: "error", message: error.message || "Error al actualizar producto" });
 	}
 });
 
@@ -68,12 +54,10 @@ productsRouter.put("/:pid", async (req, res) => {
 productsRouter.delete("/:pid", async (req, res) => {
 	try {
 		const pid = req.params.pid;
-		const deletedProduct = await Product.findByIdAndDelete(pid);
-
-		if(!deletedProduct) return res.status(404).json({status: "error", message: "Producto con id " + pid + " no encontrado"});
+		const deletedProduct = await productManager.deleteProductById(pid);
 		res.status(200).json({ status: "success", payload: deletedProduct });
 	} catch (error) {
-		res.status(500).json({ status: "error", message: "Error al eliminar producto: " + error });
+		res.status(error.statusCode || 500).json({ status: "error", message: error.message || "Error al eliminar producto" });
 	}
 });
 
