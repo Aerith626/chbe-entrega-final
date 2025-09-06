@@ -1,7 +1,8 @@
 import express from "express";
 import Product from "../models/product.model.js";
 import mongoose from "mongoose";
-
+import { isAuthenticated, requireAuth } from "../middlewares/auth/jwt-auth.js";
+import { userManager, githubUserManager } from "../controllers/userManager.js";
 const viewsRouter = express.Router();
 
 // Home
@@ -49,5 +50,27 @@ viewsRouter.get("/products/:pid", async (req, res) => {
 		res.status(500).send({ message: error.message });
 	}
 });
+
+// Login
+viewsRouter.get("/login", isAuthenticated, async (req, res) => {
+	res.render("login");
+})
+
+viewsRouter.get("/register", isAuthenticated, async (req, res) => {
+	res.render("register");
+})
+
+viewsRouter.get("/users/profile", requireAuth, async (req, res) => {
+	/* let fullUser;
+	if (req.user.provider === "github") {
+		fullUser = await githubUserManager.getItemById(req.user.id)
+	} else {
+		fullUser = await userManager.getItemById(req.user.id)
+	}
+	const userNoPassword = fullUser.toObject();
+	delete userNoPassword.password */
+	res.render("profile");
+})
+
 
 export default viewsRouter;

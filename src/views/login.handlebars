@@ -1,0 +1,61 @@
+	<div class="row justify-content-center">
+		<div class="col-lg-6 mb-4">
+			{{#if error}}
+			<div class="alert alert-danger">{{error}}</div>
+			{{/if}}
+			<div class="card">
+				<div class="card-body">
+					<h2>Login</h2>
+					<form action="/api/sessions/login" method="POST" class="mb-3">
+						<div class="mb-3">
+							<label for="email" class="form-label">Correo electrónico</label>
+							<input type="email" placeholder="Correo electrónico" class="form-control" id="email" name="email" required>
+						</div>
+						<div class="mb-3">
+							<label for="password" class="form-label">Contraseña</label>
+							<input type="password" placeholder="Contraseña" class="form-control" id="password" name="password" required>
+						</div>
+						<button type="submit" class="btn btn-dark w-100">Iniciar sesión</button>
+					</form>
+					<a href="/api/sessions/github" class="btn btn-outline-dark w-100">
+						<img src="https://github.githubassets.com/favicons/favicon.png" style="height:20px;margin-right:5px;"> Iniciar sesión con GitHub
+						</a>
+				</div>
+			</div>
+		</div>
+		<div class="w-100"></div>
+		<div class="col-lg-6">
+			<div class="card">
+				<div class="card-body">
+					<h2>Registrarse</h2>
+					<div id="registerMessage"></div>
+					<form id="registerForm" action="/api/sessions/register" method="POST">
+						<div class="row">
+							<div class="mb-3">
+								<label for="first_name" class="form-label">Nombre</label>
+								<input type="text" placeholder="Nombre" class="form-control" id="first_name" name="first_name" required>
+							</div>
+							<div class="mb-3">
+								<label for="last_name" class="form-label">Apellido</label>
+								<input type="text" placeholder="Apellido" class="form-control" id="last_name" name="last_name" required>
+							</div>
+							<div class="mb-3">
+								<label for="age" class="form-label">Edad</label>
+								<input type="number" placeholder="Edad" class="form-control" id="age" name="age" min="0" required>
+							</div>
+							<div class="w-100"></div>
+							<div class="mb-3">
+								<label for="email" class="form-label">Correo electrónico</label>
+								<input type="email" placeholder="Correo electrónico" class="form-control" id="email" name="email" required>
+							</div>
+							<div class="mb-3">
+								<label for="password" class="form-label">Contraseña</label>
+								<input type="password" placeholder="Contraseña" class="form-control" id="password" name="password" required>
+							</div>
+						</div>
+						<button type="submit" class="btn btn-dark w-100">Crear cuenta</button>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>

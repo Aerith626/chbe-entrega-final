@@ -1,6 +1,6 @@
-import Cart from "../models/cart.model.js";
-import * as Errors from "./errorHandler.js";
+import { Cart } from "../models/cart.model.js";
 import ProductManager from "./productManager.js";
+import * as Errors from '../utilities/errorHandler.js'
 
 class CartManager {
 	async getCarts () {
@@ -23,6 +23,11 @@ class CartManager {
 	async addCart() {
 		const cart = new Cart();
 		return await cart.save();
+	}
+
+	async createCartForUser() {
+		const newCart = await this.addCart();
+		return newCart._id;
 	}
 
 	async addProductToCart(cid, pid, quantity) {
@@ -59,4 +64,4 @@ class CartManager {
 	}
 }
 
-export default CartManager;
+export const cartManager = new CartManager;

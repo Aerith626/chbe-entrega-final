@@ -1,0 +1,20 @@
+<h2>Perfil de usuario</h2>
+<p>Información del usuario</p>
+
+<img src="{{#if user.thumbnail}}{{user.thumbnail}}{{else}}/img/avatar-placeholder.png{{/if}}" alt="Avatar" class="mb-3 rounded-circle" style="height:150px; width:150px;">
+<dl>
+	<dt>Nombre</dt>
+	<dd>{{user.first_name}} {{ user.last_name}}</dd>
+
+	<dt>Correo electrónico</dt>
+	<dd>{{user.email}}</dd>
+
+	<dt>Edad</dt>
+	<dd>{{user.age}}</dd>
+
+	<dt>Rol</dt>
+	<dd>{{user.role}}</dd>
+
+	<dt>Id carrito</dt>
+	<dd>{{user.cart}}</dd>
+</dl>

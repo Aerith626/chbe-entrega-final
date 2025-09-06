@@ -1,8 +1,6 @@
 import express from 'express';
-import Cart from '../models/cart.model.js';
-import CartManager from '../controllers/cartManager.js';
+import { cartManager } from '../controllers/cartManager.js';
 
-const cartManager = new CartManager;
 const cartRouter = express.Router();
 
 // Todos los carritos

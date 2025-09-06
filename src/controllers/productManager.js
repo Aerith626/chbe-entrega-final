@@ -1,5 +1,5 @@
 import Product from "../models/product.model.js";
-import * as Errors from "./errorHandler.js";
+import * as Errors from '../utilities/errorHandler.js'
 
 class ProductManager {
 	async getProducts({page = 1, limit = 5, sort = "asc"}) {

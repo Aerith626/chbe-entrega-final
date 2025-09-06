@@ -18,6 +18,15 @@
 						<a class="nav-link active" aria-current="page" href="/">Inicio</a>
 					</li>
 				</ul>
+				<div class="ms-auto">
+					{{#if user }}
+					<span class="me-2">{{#if user.first_name}}Bienvenido, {{user.first_name}}{{/if}}</span>
+					<a href="/users/profile"><img src="{{#if user.thumbnail}}{{user.thumbnail}}{{else}}/img/avatar-placeholder.png{{/if}}" alt="" style="width: 40px; height: 40px; object-fit: cover;" class="rounded-circle me-2"></a>
+					<a href="/api/sessions/logout" class="btn btn-outline-light">Cerrar sesión</a>
+					{{else}}
+					<a href="/login" class="btn btn-light">Iniciar sesión</a>
+					{{/if}}
+				</div>
 			</div>
 		</div>
 	</nav>
